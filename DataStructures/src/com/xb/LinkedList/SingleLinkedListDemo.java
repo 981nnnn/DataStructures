@@ -35,6 +35,10 @@ public class SingleLinkedListDemo {
     singleLinkedList.addByOrder(hero3);
     singleLinkedList.addByOrder(hero2);
 
+    HeroNode head = singleLinkedList.getHead();
+    singleLinkedList.reverseList(head);
+
+
     // 测试一下单链表的反转功能
     System.out.println("原来链表的情况~~");
     singleLinkedList.list();
@@ -187,15 +191,25 @@ public class SingleLinkedListDemo {
       }
     }
 
+    /**
+     * 反转链表，head是头节点
+     */
     public void reverseList(HeroNode head) {
       // 如果头节点的下一个节点时候，说明没有
       // 如果头节点的下一个节点的下一个节点，说明只有一个
       if (head.next == null || head.next.next == null) {
         return;
       }
+      HeroNode cur = head.next;
       HeroNode next = null; // 指向当前节点（cur）的下一个节点
       HeroNode reverseHead = new HeroNode(0, "", "");
-
+      while (cur != null) {
+        next = cur.next;//先暂时保存当前节点的下一个节点，因为后面需要使用
+        cur.next = reverseHead.next; // 将cur的下一个节点指向新的链表的最前端
+        reverseHead.next = cur; // 将cur连接到新的链表上
+        cur = next;
+      }
+      head.next = reverseHead.next;
     }
 
 
