@@ -3,6 +3,7 @@ package com.xb.LinkedList;
 import com.sun.xml.internal.ws.api.pipe.NextAction;
 
 import java.util.EmptyStackException;
+import java.util.Stack;
 
 /**
  * @ClassName SingleLinkedListDemo
@@ -34,6 +35,15 @@ public class SingleLinkedListDemo {
     singleLinkedList.addByOrder(hero4);
     singleLinkedList.addByOrder(hero3);
     singleLinkedList.addByOrder(hero2);
+    HeroNode lastKNode = singleLinkedList.findLastKNode(singleLinkedList.head, 1);
+    System.out.println(lastKNode);
+    singleLinkedList.reversePrint(singleLinkedList.head);
+
+
+    // 测试链表的有效节点个数
+    int length = singleLinkedList.getLength(singleLinkedList.head);
+    System.out.println("有效节点的个数" + length);
+
 
     HeroNode head = singleLinkedList.getHead();
     singleLinkedList.reverseList(head);
@@ -212,7 +222,64 @@ public class SingleLinkedListDemo {
       head.next = reverseHead.next;
     }
 
+    /**
+     * 求链表中的有效节点个数 思路： 从头节点开始，判断下一个节点是否是null，如果不是null，length+1； 如果下一个节点是空，直接返回length（初始长度0）
+     */
+    public int getLength(HeroNode node) {
+      int length = 0;
+      if (node.next == null) {
+        return length;
+      }
+      HeroNode cur = node.next;
+      while (cur != null) {
+        length++;
+        cur = cur.next;
+      }
+      return length;
+    }
 
+    /**
+     * 查询倒数第k个的节点 思路： 先从头开始遍历，得到链表的长度 getLength 得到size以后，我们从头开始的第一个开始遍历（size-index），就可以得到
+     */
+    public HeroNode findLastKNode(HeroNode node, int k) {
+      if (node.next == null) {
+        return null;
+      }
+      int length = 0;
+      HeroNode cur = node.next;
+      while (cur != null) {
+        length++;
+        cur = cur.next;
+      }
+      if (k > length) {
+        System.out.println("k的大于链表的长度");
+        return null;
+      }
+      HeroNode result = node.next;
+      for (int i = 0; i < length - k; i++) {
+        result = result.next;
+      }
+      return result;
+    }
+
+    /**
+     * 从尾到头开始打印链表
+     */
+    public void reversePrint(HeroNode node) {
+      if (node.next == null) {
+        return;
+      }
+      HeroNode cur = node.next;
+      Stack<HeroNode> stack = new Stack<>();
+      while (cur != null) {
+        stack.push(cur);
+        cur = cur.next;
+      }
+      while (!stack.isEmpty()) {
+        HeroNode pop = stack.pop();
+        System.out.println(pop);
+      }
+    }
   }
 }
 
